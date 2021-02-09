@@ -1,10 +1,3 @@
-package main
-
-import (
-    "fmt"
-)
-
-func main() {
-    // Print “Hello, World!” to console
-    fmt.Println("Hello, World!")
-}
+// comment
+var x float32 = 1.22e+21
+var y string = "hi\n";
