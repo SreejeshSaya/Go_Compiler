@@ -1,3 +1,5 @@
-// comment
-var x float32 = 1.22e+21
-var y string = "hi\n";
+package main
+
+func main() {
+	var x int = 10;
+}
