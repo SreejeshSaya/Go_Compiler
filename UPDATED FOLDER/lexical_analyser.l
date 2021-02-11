@@ -52,6 +52,7 @@ string		\"(\\.|[^"\\])*\"
 "=="|"!="|">"|"<"|">="|"<="	{ return T_Relop; }
 
 "="					{ return '='; }
+":="				{ return T_For_Init; }
 "+="|"-="|"*="|"/="	{ return T_Assgnop; }
 
 "true"				{ return T_True; }
