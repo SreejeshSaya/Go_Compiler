@@ -12,7 +12,8 @@
 [ ] Evaluation of expressions and updating symbol table
 
 ## Todo
-Only remaining task is to remove conflicts in grammar
+1. Remove conflicts in grammar
+2. Take care of "var not declared" in some more places
 
 ## Phase 2 (20)
 [ ] Eliminate Dead code/ unreachabel code

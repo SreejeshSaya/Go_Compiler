@@ -19,16 +19,16 @@ void insert(string id, string type, int lineno, string value, int scope)
 	st.push_back(n);
 }
 
-bool check_decl(string id, int new_scope)
+int check_decl(string id, int new_scope)
 {
 	for(Node &n : st)
 	{
 		if(n.id == id and n.scope == new_scope)
 		{
-			return true;
+			return n.lineno;
 		}
 	}
-	return false;
+	return 0;
 }
 
 ostream& operator<<(ostream &o, const Node& n)

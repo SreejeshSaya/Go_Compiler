@@ -27,8 +27,8 @@ MAIN			: T_Func T_Main T_Paren '{' Stmts '}'
 
 Stmts			: 
 				| DECL Stmts
-				| ASSIGN Stmts
-				| UNARY_EXPR Stmts
+				| ASSIGN ';' Stmts
+				| UNARY_EXPR ';' Stmts
 				| '{' Stmts '}'
 				| LOOP Stmts
 				;
@@ -40,21 +40,42 @@ TYPE			: T_Int
 				| T_String
 				;
 
-VALUE 			: EXPR
+VALUE 			: EXPR | UNARY_EXPR
 				| T_String
 				;
 
 DECL			: T_Var LISTVAR TYPE '=' LISTVALUE ';'
 					{
+						if(vars.size() != vals.size())
+						{
+							yyerror("Mismatch in line " + to_string(yylineno) + ": " + to_string(vars.size()) + " variables " + to_string(vals.size()) + " values");
+							exit(1);
+						}
 						for(int i = 0; i < vars.size(); i++)
+						{
+							int lineno;
+							if(lineno = check_decl(vars[i], scope))
+							{
+								yyerror(vars[i] + " redeclared in line " + to_string(yylineno) + "\nPrevious declaration in line " + to_string(lineno));
+								exit(1);
+							}
 							insert(vars[i], $3, yylineno, vals[i], scope);
+						}
 						vars.clear();
 						vals.clear();
 				}
 				| T_Var LISTVAR TYPE ';'
 					{
 						for(int i = 0; i < vars.size(); i++)
+						{
+							int lineno;
+							if(lineno = check_decl(vars[i], scope))
+							{
+								yyerror(vars[i] + " redeclared in line " + to_string(yylineno) + "\nPrevious declaration in line " + to_string(lineno));
+								exit(1);
+							}
 							insert(vars[i], $3, yylineno, "\0", scope);
+						}
 						vars.clear();
 				}
 				;
@@ -67,24 +88,22 @@ LISTVALUE		: VALUE																				{ vals.push_back($1); }
 				| VALUE { vals.push_back($1); } ',' LISTVALUE
 				;
 
-ASSIGN  		: T_Id '=' VALUE ';'
+ASSIGN  		: T_Id '=' VALUE
 					{
 						if(not check_decl($1, scope))
 						{
-							yyerror($1 + " not declared");
+							yyerror($1 + " not declared in line " + to_string(yylineno));
 							exit(1);
 						}
 				}
-				| T_Id T_Assgnop VALUE ';'
-					{
-						if(not check_decl($1, scope))
-						{
-							yyerror($1 + " not declared");
-							exit(1);
-						}
-				}
-				| T_Id '=' VALUE
 				| T_Id T_Assgnop VALUE
+					{
+						if(not check_decl($1, scope))
+						{
+							yyerror($1 + " not declared in line " + to_string(yylineno));
+							exit(1);
+						}
+				}
 				;
 
 EXPR 			: BOOL_EXPR
@@ -93,10 +112,8 @@ EXPR 			: BOOL_EXPR
 
 ARITH_EXPR 		: ARITH_EXPR '+' T | ARITH_EXPR '-' T | T
 				;
-
 T				: T '*' F | T '/' F | T '%' F | F
 				;
-
 F				: '-' T_Num
 				| '-' T_Id
 				| T_Num
@@ -125,18 +142,13 @@ Z				: T_True
 				| RELATIONAL
 				;
 
-UNARY_EXPR 		: T_Id T_Inc ';'
-			  	| T_Inc T_Id ';'
-			  	| T_Id T_Dec ';'
-			  	| T_Dec T_Id ';'
-			  	| T_Id T_Inc
+UNARY_EXPR 		: T_Id T_Inc
 			  	| T_Inc T_Id
 			  	| T_Id T_Dec
 			  	| T_Dec T_Id
 			  	;
 
-LOOP			: FOR
-				| WHILE
+LOOP			: FOR | WHILE
 				;
 
 WHILE			: T_For BOOL_EXPR '{' Stmts '}'
@@ -147,7 +159,7 @@ POST			: UNARY_EXPR
 				| ASSIGN
 				;
 
-FOR				: T_For T_Id T_For_Init VALUE ';' BOOL_EXPR ';' POST '{' Stmts '}'
+FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, scope + 1); } ';' BOOL_EXPR ';' POST '{' Stmts '}'
 				;
 
 %%
