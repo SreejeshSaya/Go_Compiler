@@ -162,7 +162,7 @@ FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, scope + 1
 
 void yyerror(string s)
 {
-	cout << s << "\n";
+	cout << "\n\n" << s << "\n\n";
 }
 
 int main()
@@ -174,4 +174,3 @@ int main()
 	cout << "\n";
 	return 0;
 }
-
