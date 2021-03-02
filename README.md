@@ -1,22 +1,24 @@
 # UE18CS351-Go_Compiler
 
 ## Phase 1 (10)
-[ ] Syntax Validation
+[x] Syntax Validation
 
-[ ] Remove Comment Lines
+[x] Remove Comment Lines
 
 [ ] Token Generation
 
-[ ] Symbol Table Generation
+[x] Symbol Table Generation
 
 [ ] Evaluation of expressions and updating symbol table
 
 ## Todo
-1. Remove conflicts in grammar
-2. Take care of "var not declared" in some more places
+1. Print Tokens
+2. Remove conflicts in grammar
+3. Take care of "var not declared" in some more places
+4. scope variable problem in line 162
 
 ## Phase 2 (20)
-[ ] Eliminate Dead code/ unreachabel code
+[ ] Eliminate Dead code/ unreachable code
 
 [ ] Implement Common subexpression elimination
 
