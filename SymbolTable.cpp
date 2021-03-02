@@ -23,7 +23,7 @@ int check_decl(string id, int new_scope)
 {
 	for(Node &n : st)
 	{
-		if(n.id == id and n.scope == new_scope)
+		if(n.id == id and n.scope <= new_scope)
 		{
 			return n.lineno;
 		}
@@ -33,7 +33,8 @@ int check_decl(string id, int new_scope)
 
 ostream& operator<<(ostream &o, const Node& n)
 {
-	return o << n.id << "\t" << n.type << "\t" << n.lineno << "\t" << n.value << "\t" <<  n.scope << "\n";
+	// return o << n.id << "\t" << n.type << "\t" << n.lineno << "\t" << n.value << "\t" <<  n.scope << "\n";
+	return o << n.id << "\t" << n.type << "\t" << n.lineno << "\t" <<  n.scope << "\n";
 }
 
 

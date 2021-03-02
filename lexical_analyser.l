@@ -21,65 +21,65 @@ string		\"(\\.|[^"\\])*\"
 
 %%
 
-\/\/.*\n			{ ; }
-\/\*(.|\n)*\*\/		{ ; }
+\/\/.*\n			{ cout << "\n"; }
+\/\*(.|\n)*\*\/		{ cout << "\n"; }
 
-"break"				{ return T_Break; }
-"for"				{ return T_For; }
-"func"				{ return T_Func; }
-"import"			{ return T_Import; }
-"package"			{ return T_Package; }
-"return"			{ return T_Return; }
-"var"				{ yylval = yytext; return T_Var; }
+"break"				{ cout << "T_Break"; return T_Break; }
+"for"				{ cout << "T_For"; return T_For; }
+"func"				{ cout << "T_Func"; return T_Func; }
+"import"			{ cout << "T_Import"; return T_Import; }
+"package"			{ cout << "T_Package"; return T_Package; }
+"return"			{ cout << "T_Return"; return T_Return; }
+"var"				{ cout << "T_Var"; yylval = yytext; return T_Var; }
 
-"\"fmt\""			{ return T_Fmt; }
-"main"				{ return T_Main; }
+"\"fmt\""			{ cout << "T_Fmt"; return T_Fmt; }
+"main"				{ cout << "T_Main"; return T_Main; }
 
-"int"				{ yylval = yytext; return T_Int; }
-"float32"			{ yylval = yytext; return T_Float; }
-"float64"			{ yylval = yytext; return T_Double; }
-"bool"				{ yylval = yytext; return T_Bool; }
-"string"			{ yylval = yytext; return T_String; }
+"int"				{ cout << "T_Int"; yylval = yytext; return T_Int; }
+"float32"			{ cout << "T_Float"; yylval = yytext; return T_Float; }
+"float64"			{ cout << "T_Double"; yylval = yytext; return T_Double; }
+"bool"				{ cout << "T_Bool"; yylval = yytext; return T_Bool; }
+"string"			{ cout << "T_String"; yylval = yytext; return T_String; }
 
-"+"					{ return '+'; }
-"-"					{ return '-'; }
-"*"					{ return '*'; }
-"/"					{ return '/'; }
-"%"					{ return '%'; }
-"++"				{ return T_Inc; }
-"--"				{ return T_Dec; }
+"+"					{ cout << "+"; return '+'; }
+"-"					{ cout << "-"; return '-'; }
+"*"					{ cout << "*"; return '*'; }
+"/"					{ cout << "/"; return '/'; }
+"%"					{ cout << "%"; return '%'; }
+"++"				{ cout << "T_Inc"; return T_Inc; }
+"--"				{ cout << "T_Dec"; return T_Dec; }
 
-"=="|"!="|">"|"<"|">="|"<="	{ return T_Relop; }
+"=="|"!="|">"|"<"|">="|"<="	{ cout << "T_Relop"; return T_Relop; }
 
-"="					{ return '='; }
-":="				{ return T_For_Init; }
-"+="|"-="|"*="|"/="	{ return T_Assgnop; }
+"="					{ cout << "="; return '='; }
+":="				{ cout << "T_For_Init"; return T_For_Init; }
+"+="|"-="|"*="|"/="	{ cout << "T_Assgnop"; return T_Assgnop; }
 
-"true"				{ return T_True; }
-"false"				{ return T_False; }
+"true"				{ cout << "T_True"; return T_True; }
+"false"				{ cout << "T_False"; return T_False; }
 
-"&&"				{ return T_And; }
-"||"				{ return T_Or; }
-"!"					{ return '!'; }
+"&&"				{ cout << "T_And"; return T_And; }
+"||"				{ cout << "T_Or"; return T_Or; }
+"!"					{ cout << "!"; return '!'; }
 
-";"					{ return ';'; }
-","					{ return ','; }
-"."					{ return '.'; }
+";"					{ cout << ";"; return ';'; }
+","					{ cout << ","; return ','; }
+"."					{ cout << "."; return '.'; }
 
-"["					{ return '['; }
-"]"					{ return ']'; }
-"("					{ return '('; }
-")"					{ return ')'; }
-"{"					{ ++scope; return '{'; }
-"}"					{ --scope; return '}'; }
-"()"				{ return T_Paren; }
-"[]"				{ return T_Dims; }
-"{}"				{ return T_Brace; }
+"["					{ cout << "["; return '['; }
+"]"					{ cout << "]"; return ']'; }
+"("					{ cout << "("; return '('; }
+")"					{ cout << ")"; return ')'; }
+"{"					{ cout << "{"; ++scope; return '{'; }
+"}"					{ cout << "}"; --scope; return '}'; }
+"()"				{ cout << "T_Paren"; return T_Paren; }
+"[]"				{ cout << "T_Dims"; return T_Dims; }
+"{}"				{ cout << "T_Brace"; return T_Brace; }
 
-{id}				{ yylval = yytext; return T_Id; }
-{number}			{ yylval = yytext; return T_Num; }
-{string}			{ yylval = yytext; return T_String; }
-[ |\t|\n]			{ ; }
+{id}				{ cout << "T_Id"; yylval = yytext; return T_Id; }
+{number}			{ cout << "T_Num"; yylval = yytext; return T_Num; }
+{string}			{ cout << "T_String"; yylval = yytext; return T_String; }
+[ |\t|\n]			{ cout << yytext; }
 .					{ return *yytext; }
 
 %%

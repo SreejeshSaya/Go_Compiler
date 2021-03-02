@@ -19,7 +19,7 @@
 
 %%
 
-PROG   			: T_Package T_Main Stmts MAIN Stmts 												{ cout << "Valid\n"; }
+PROG   			: T_Package T_Main Stmts MAIN Stmts 												{ cout << "\nValid Program\n\n"; }
 				;
 
 MAIN			: T_Func T_Main T_Paren '{' Stmts '}'
@@ -136,10 +136,6 @@ Y				: '!' Y | Z
 				;
 Z				: T_True
 				| T_False
-				| T_Id
-				| T_Num
-				| '(' LOGICAL ')'
-				| RELATIONAL
 				;
 
 UNARY_EXPR 		: T_Id T_Inc
@@ -171,9 +167,11 @@ void yyerror(string s)
 
 int main()
 {
+	cout << "Tokens:\n";
 	yyparse();
-	cout << "id\ttype\tline\tvalue\tscope\n";
+	cout << "Symbol Table:\nid\ttype\tline\tscope\n";
 	disp();
+	cout << "\n";
 	return 0;
 }
 
