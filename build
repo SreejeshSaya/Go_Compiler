@@ -1,0 +1,5 @@
+#!/bin/bash
+
+yacc -d syntax_analyser.y 
+lex lexical_analyser.l 
+g++ y.tab.c lex.yy.c SymbolTable.cpp -ll -Ly
