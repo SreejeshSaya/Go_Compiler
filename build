@@ -4,4 +4,4 @@ yacc -d syntax_analyser.y
 lex lexical_analyser.l 
 g++ y.tab.c lex.yy.c SymbolTable.cpp -ll -Ly
 echo
-./a.out < $1
+./a.out < ./sample_programs/$1
