@@ -71,8 +71,8 @@ string		\"(\\.|[^"\\])*\"
 "]"					{ cout << "]"; return ']'; }
 "("					{ cout << "("; return '('; }
 ")"					{ cout << ")"; return ')'; }
-"{"					{ cout << "{"; ++scope; return '{'; }
-"}"					{ cout << "}"; --scope; return '}'; }
+"{"					{ cout << "{"; return '{'; }
+"}"					{ cout << "}"; return '}'; }
 "()"				{ cout << "T_Paren"; return T_Paren; }
 "[]"				{ cout << "T_Dims"; return T_Dims; }
 "{}"				{ cout << "T_Brace"; return T_Brace; }

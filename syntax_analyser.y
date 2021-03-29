@@ -22,14 +22,14 @@
 PROG   			: T_Package T_Main Stmts MAIN Stmts 												{ cout << "\nValid Program\n\n"; }
 				;
 
-MAIN			: T_Func T_Main T_Paren '{' Stmts '}'
+MAIN			: T_Func T_Main T_Paren '{' { ++scope; } Stmts '}' { --scope; }
 				;
 
 Stmts			: 
 				| DECL Stmts
 				| ASSIGN ';' Stmts
 				| UNARY_EXPR ';' Stmts
-				| '{' Stmts '}'
+				| '{' { ++scope; } Stmts '}' { --scope; }
 				| LOOP Stmts
 				;
 
@@ -98,7 +98,6 @@ ASSIGN  		: T_Id '=' VALUE
 				}
 				| T_Id T_Assgnop VALUE
 					{
-						cout << scope << "\n";
 						if(not check_decl($1, scope))
 						{
 							yyerror($1 + " not declared in line " + to_string(yylineno));
@@ -117,8 +116,22 @@ T				: T '*' F | T '/' F | T '%' F | F
 				;
 F				: '-' T_Num
 				| '-' T_Id
+						{
+							if(not check_decl($1, scope))
+							{
+								yyerror($1 + " not declared in line " + to_string(yylineno));
+								exit(1);
+							}
+				}
 				| T_Num
 				| T_Id
+					{
+						if(not check_decl($1, scope))
+						{
+							yyerror($1 + " not declared in line " + to_string(yylineno));
+							exit(1);
+						}
+				}
 				| '(' ARITH_EXPR ')'
 				;
 
@@ -140,23 +153,51 @@ Z				: T_True
 				;
 
 UNARY_EXPR 		: T_Id T_Inc
+						{
+							if(not check_decl($1, scope))
+							{
+								yyerror($1 + " not declared in line " + to_string(yylineno));
+								exit(1);
+							}
+				}
 			  	| T_Inc T_Id
+			  			{
+							if(not check_decl($1, scope))
+							{
+								yyerror($1 + " not declared in line " + to_string(yylineno));
+								exit(1);
+							}
+				}
 			  	| T_Id T_Dec
+			  			{
+							if(not check_decl($1, scope))
+							{
+								yyerror($1 + " not declared in line " + to_string(yylineno));
+								exit(1);
+							}
+				}
 			  	| T_Dec T_Id
+			  			{
+							if(not check_decl($1, scope))
+							{
+								yyerror($1 + " not declared in line " + to_string(yylineno));
+								exit(1);
+							}
+				}
 			  	;
 
 LOOP			: FOR | WHILE
 				;
 
-WHILE			: T_For BOOL_EXPR '{' Stmts '}'
-				| T_For '{' Stmts '}'
+WHILE			: T_For BOOL_EXPR '{' { ++scope; } Stmts '}' { --scope; }
+				| T_For '{' { ++scope; } Stmts '}' { --scope; }
 				;
 
 POST			: UNARY_EXPR
 				| ASSIGN
 				;
 
-FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, scope + 1); } ';' BOOL_EXPR ';' POST { --scope; cout << "any" << scope << "\n"; } '{' Stmts '}'
+FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, ++scope); } ';' BOOL_EXPR ';' POST '{' Stmts '}' { --scope; }
 				;
 
 %%
