@@ -12,6 +12,11 @@
 [ ] Evaluation of expressions and updating symbol table
 
 ## Todo
+Sir's Suggestions ---
+1. Reference symbol table to literal table
+2. Add value to symbol table
+
+Our own TODO ---
 1. Remove conflicts in grammar
 2. Take care of "var not declared" in some more places
 3. scope variable problem in line 162
