@@ -5,7 +5,8 @@ var z string = "hey";
 func main() {
 	var a int = 1;
 	for i := 0; i < 4; i += 1 {
-		a = j;
+		// scope: 1
+		a = i;
 	}
 	var b int = 2;
 	for a < 1 {

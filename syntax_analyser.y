@@ -98,6 +98,7 @@ ASSIGN  		: T_Id '=' VALUE
 				}
 				| T_Id T_Assgnop VALUE
 					{
+						cout << scope << "\n";
 						if(not check_decl($1, scope))
 						{
 							yyerror($1 + " not declared in line " + to_string(yylineno));
@@ -155,7 +156,7 @@ POST			: UNARY_EXPR
 				| ASSIGN
 				;
 
-FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, scope + 1); } ';' BOOL_EXPR ';' POST '{' Stmts '}'
+FOR				: T_For T_Id T_For_Init VALUE { insert($2, "int", yylineno, $4, scope + 1); } ';' BOOL_EXPR ';' POST { --scope; cout << "any" << scope << "\n"; } '{' Stmts '}'
 				;
 
 %%
