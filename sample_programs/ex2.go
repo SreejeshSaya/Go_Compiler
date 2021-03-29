@@ -3,9 +3,9 @@ package main
 var z string = "hey";
 
 func main() {
-	var a int = 1;
+	var a, e int = 1;
 	for i := 0; i < 4; i += 1 {
-		a = j;
+		a = i;
 	}
 	var b int = 2;
 	for a < 1 {

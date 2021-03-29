@@ -6,7 +6,7 @@
 	void yyerror(string);
 	#define YYSTYPE string
 	extern int yylineno;
-	extern int scope;
+	int scope = 0;
 	vector<string> vars;
 	vector<string> vals;
 %}

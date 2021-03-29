@@ -5,7 +5,6 @@
 	#define YYSTYPE string
 	#include "y.tab.h"
 	extern YYSTYPE yylval;
-	int scope = 0;
 %}
 
 /* Regular Definitions */
