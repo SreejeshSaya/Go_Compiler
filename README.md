@@ -18,8 +18,6 @@ Sir's Suggestions ---
 
 Our own TODO ---
 1. Remove conflicts in grammar
-2. Take care of "var not declared" in some more places
-3. scope variable problem in line 162
 
 ## Phase 2 (20)
 [ ] Eliminate Dead code/ unreachable code
