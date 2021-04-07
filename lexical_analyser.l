@@ -2,7 +2,8 @@
 	#include <cstdio>
 	#include <bits/stdc++.h>
 	using namespace std;
-	#define YYSTYPE string
+	#include "attributes.h"
+	#define YYSTYPE ATTRIBUTES
 	#include "y.tab.h"
 	extern YYSTYPE yylval;
 %}
@@ -30,16 +31,16 @@ string		\"(\\.|[^"\\])*\"
 "import"			{ cout << "T_Import"; return T_Import; }
 "package"			{ cout << "T_Package"; return T_Package; }
 "return"			{ cout << "T_Return"; return T_Return; }
-"var"				{ cout << "T_Var"; yylval = yytext; return T_Var; }
+"var"				{ cout << "T_Var"; yylval.strval = yytext; return T_Var; }
 
 "\"fmt\""			{ cout << "T_Fmt"; return T_Fmt; }
 "main"				{ cout << "T_Main"; return T_Main; }
 
-"int"				{ cout << "T_Int"; yylval = yytext; return T_Int; }
-"float32"			{ cout << "T_Float"; yylval = yytext; return T_Float; }
-"float64"			{ cout << "T_Double"; yylval = yytext; return T_Double; }
-"bool"				{ cout << "T_Bool"; yylval = yytext; return T_Bool; }
-"string"			{ cout << "T_String"; yylval = yytext; return T_String; }
+"int"				{ cout << "T_Int"; yylval.strval = yytext; return T_Int; }
+"float32"			{ cout << "T_Float"; yylval.strval = yytext; return T_Float; }
+"float64"			{ cout << "T_Double"; yylval.strval = yytext; return T_Double; }
+"bool"				{ cout << "T_Bool"; yylval.strval = yytext; return T_Bool; }
+"string"			{ cout << "T_String"; yylval.strval = yytext; return T_String; }
 
 "+"					{ cout << "+"; return '+'; }
 "-"					{ cout << "-"; return '-'; }
@@ -49,11 +50,11 @@ string		\"(\\.|[^"\\])*\"
 "++"				{ cout << "T_Inc"; return T_Inc; }
 "--"				{ cout << "T_Dec"; return T_Dec; }
 
-"=="|"!="|">"|"<"|">="|"<="	{ cout << "T_Relop"; return T_Relop; }
+"=="|"!="|">"|"<"|">="|"<="	{ cout << "T_Relop"; yylval.strval = yytext; return T_Relop; }
 
 "="					{ cout << "="; return '='; }
 ":="				{ cout << "T_For_Init"; return T_For_Init; }
-"+="|"-="|"*="|"/="	{ cout << "T_Assgnop"; return T_Assgnop; }
+"+="|"-="|"*="|"/="	{ cout << "T_Assgnop"; yylval.strval = yytext[0]; return T_Assgnop; }
 
 "true"				{ cout << "T_True"; return T_True; }
 "false"				{ cout << "T_False"; return T_False; }
@@ -76,9 +77,9 @@ string		\"(\\.|[^"\\])*\"
 "[]"				{ cout << "T_Dims"; return T_Dims; }
 "{}"				{ cout << "T_Brace"; return T_Brace; }
 
-{id}				{ cout << "T_Id"; yylval = yytext; return T_Id; }
-{number}			{ cout << "T_Num"; yylval = yytext; return T_Num; }
-{string}			{ cout << "T_String"; yylval = yytext; return T_String; }
+{id}				{ cout << "T_Id"; yylval.strval = yytext; return T_Id; }
+{number}			{ cout << "T_Num"; yylval.val = stof(yytext); return T_Num; }
+{string}			{ cout << "T_String"; yylval.strval = yytext; return T_String; }
 [ |\t|\n]			{ cout << yytext; }
 .					{ return *yytext; }
 

@@ -4,7 +4,7 @@ using namespace std;
 
 vector<Node> st;
 
-Node::Node(string id, string type, int lineno, string value, int scope)
+Node::Node(string id, string type, int lineno, double value, int scope)
 {
 	this->id = id;
 	this->type = type;
@@ -13,7 +13,7 @@ Node::Node(string id, string type, int lineno, string value, int scope)
 	this->scope = scope;
 }
 
-void insert(string id, string type, int lineno, string value, int scope)
+void insert(string id, string type, int lineno, double value, int scope)
 {
 	Node n = Node(id, type, lineno, value, scope);
 	st.push_back(n);
