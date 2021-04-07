@@ -14,7 +14,7 @@
 	vector<string> codes;
 	vector<string> addrs;
 	vector<double> vals;
-	string start;
+	
 %}
 
 %token T_Break T_For T_Func T_Import T_Package T_Return T_Var T_Fmt T_Main T_Int T_Float T_Double T_Bool T_String T_Inc T_Dec T_Relop T_For_Init T_Assgnop T_True T_False T_And T_Or T_Paren T_Dims T_Brace T_Id T_Num T_Not
@@ -29,7 +29,10 @@ PROG   			: T_Package T_Main Stmts MAIN Stmts
 					{ 
 						cout << "\nValid Program\n\n";
 						$$.code = $3.code + "\n" + $4.code + "\n" + $5.code + "\n";
-						cout << "Code:" << $$.code << "\n\n";
+						// cout << "Code:" << $$.code << "\n\n";
+						ofstream ICG("ICG.txt");
+						ICG << $$.code;
+						ICG.close();
 				}
 				;
 
@@ -39,7 +42,7 @@ MAIN			: T_Func T_Main T_Paren '{' { ++scope; } Stmts '}' { --scope; }
 				}
 				;
 
-Stmts			: 
+Stmts			: { $$.code = ""; }
 				| DECL Stmts
 					{ $$.code = $1.code + "\n" + $2.code + "\n"; }
 				| ASSIGN ';' Stmts
@@ -137,7 +140,7 @@ ASSIGN  		: T_Id '=' VALUE
 							yyerror($1.strval + " not declared in line " + to_string(yylineno));
 							exit(1);
 						}
-						// $$.code = $1.strval + " = " $1.strval + " " + $2.strval + " " + $3.val + "\n";
+						$$.code = $1.strval + " = " + $1.strval + " " + $2.strval + " " + to_string($3.val) + "\n";
 				}
 				;
 
@@ -237,15 +240,15 @@ F				: '-' T_Num
 BOOL_EXPR		: LOGICAL 
 				| RELATIONAL
 					{
+						$$.addr = $1.addr;
 						$$.code = $1.code + "\n";
-						cout << $1.code << "BOOL";	
 				}
 				;
 
 RELATIONAL		: ARITH_EXPR T_Relop ARITH_EXPR
 					{
 						$$.addr = newtemp();
-						$$.code = $1.code + "\n" + $3.code + "\n" + $$.addr + " = " + $1.addr + $2.strval + $3.addr + "\n" + "if " + $$.addr + " goto " + $$.True + "\n";
+						$$.code = $1.code + "\n" + $3.code + "\n" + $$.addr + " = " + $1.addr + " " + $2.strval + " " + $3.addr + "\n";
 				}
 				| '(' RELATIONAL ')'
 				;
@@ -267,6 +270,7 @@ UNARY_EXPR 		: T_Id T_Inc
 								yyerror($1.strval + " not declared in line " + to_string(yylineno));
 								exit(1);
 							}
+							$$.code = $1.strval + " = " + $1.strval + " + 1\n";
 				}
 			  	| T_Inc T_Id
 			  			{
@@ -275,6 +279,7 @@ UNARY_EXPR 		: T_Id T_Inc
 								yyerror($2.strval + " not declared in line " + to_string(yylineno));
 								exit(1);
 							}
+							$$.code = $1.strval + " = " + $1.strval + " + 1\n";
 				}
 			  	| T_Id T_Dec
 			  			{
@@ -283,6 +288,7 @@ UNARY_EXPR 		: T_Id T_Inc
 								yyerror($1.strval + " not declared in line " + to_string(yylineno));
 								exit(1);
 							}
+							$$.code = $1.strval + " = " + $1.strval + " - 1\n";
 				}
 			  	| T_Dec T_Id
 			  			{
@@ -291,6 +297,7 @@ UNARY_EXPR 		: T_Id T_Inc
 								yyerror($2.strval + " not declared in line " + to_string(yylineno));
 								exit(1);
 							}
+							$$.code = $1.strval + " = " + $1.strval + " - 1\n";
 				}
 			  	;
 
@@ -304,15 +311,33 @@ LOOP			: FOR
 				}
 				;
 
-WHILE			: T_For BOOL_EXPR { $2.True = newlabel(); start = newlabel(); } '{' { ++scope; } Stmts '}' { --scope; $$.code = start + ": " + "\n" + $2.code + "\n" + $2.True + "\n" + $4.code + "\n" + "goto " + start + "\n"; }
-				| T_For '{' { ++scope; } Stmts '}' { --scope; }
+WHILE			: T_For '(' BOOL_EXPR ')' '{' { ++scope; } Stmts '}' 
+					{
+						--scope;
+						string start = newlabel();
+						$3.True = newlabel();
+						$3.False = newlabel();
+						$$.code = start + ": " + "\n" + $3.code + "if " + $3.addr + " goto " + $3.True + "\n" + "goto " + $3.False + "\n" + $3.True + ": " + $7.code + "\n" + "goto " + start + "\n" + $3.False + ": " + "\n"; 
+				}
 				;
 
 POST			: UNARY_EXPR
+					{
+						$$.code = $1.code + "\n";
+				}
 				| ASSIGN
+					{
+						$$.code = $1.code + "\n";
+				}
 				;
 
-FOR				: T_For T_Id T_For_Init VALUE { insert($2.strval, "int", yylineno, $4.val, ++scope); } ';' BOOL_EXPR ';' POST '{' Stmts '}' { --scope; }
+FOR				: T_For T_Id T_For_Init VALUE { insert($2.strval, "int", yylineno, $4.val, ++scope); } ';' BOOL_EXPR ';' POST '{' Stmts '}' 		{
+						--scope;
+						string x = newlabel();
+						string y = newlabel();
+						string z = newlabel();
+						$$.code = $2.strval + " = " + to_string($4.val) + "\n" + z + ": " + "\n" + $7.code + "if " + $7.addr + " goto " + x + "\n" + "goto " + y + "\n" + x + ": " + "\n" + $11.code + "\n" + $9.code + "\n" + "goto " + z + "\n" + y + ": " + "\n";
+				}
 				;
 
 %%

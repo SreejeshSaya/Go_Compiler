@@ -5,3 +5,4 @@ lex lexical_analyser.l
 g++ y.tab.c lex.yy.c SymbolTable.cpp -ll -Ly
 echo
 ./a.out < ./sample_programs/$1
+python3 icg_cleaner.py

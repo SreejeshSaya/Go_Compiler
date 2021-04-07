@@ -1,5 +1,5 @@
 typedef struct ATTRIBUTES {
-	double val;
+	int val;
 	string strval;
 	string code;
 	string addr;

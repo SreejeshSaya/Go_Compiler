@@ -78,7 +78,7 @@ string		\"(\\.|[^"\\])*\"
 "{}"				{ cout << "T_Brace"; return T_Brace; }
 
 {id}				{ cout << "T_Id"; yylval.strval = yytext; return T_Id; }
-{number}			{ cout << "T_Num"; yylval.val = stof(yytext); return T_Num; }
+{number}			{ cout << "T_Num"; yylval.val = stoi(yytext); return T_Num; }
 {string}			{ cout << "T_String"; yylval.strval = yytext; return T_String; }
 [ |\t|\n]			{ cout << yytext; }
 .					{ return *yytext; }
