@@ -16,5 +16,9 @@ cd ./ICG_QUAD
 python3 Quad_Gen.py
 cd ../
 
+cd ./CODE_OPT
+python3 Code_Opt.py > OPT.txt
+cd ../
+
 echo
-gedit ./ICG_QUAD/ICG.txt ./ICG_QUAD/QUAD.txt ./sample_programs/$1 &
+gedit ./ICG_QUAD/ICG.txt ./ICG_QUAD/QUAD.txt ./CODE_OPT/OPT.txt ./sample_programs/$1 &
