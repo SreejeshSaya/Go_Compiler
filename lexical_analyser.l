@@ -2,7 +2,7 @@
 	#include <cstdio>
 	#include <bits/stdc++.h>
 	using namespace std;
-	#include "attributes.h"
+	#include "./include/attributes.h"
 	#define YYSTYPE ATTRIBUTES
 	#include "y.tab.h"
 	extern YYSTYPE yylval;

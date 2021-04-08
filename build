@@ -2,7 +2,11 @@
 
 yacc -d syntax_analyser.y 
 lex lexical_analyser.l 
-g++ y.tab.c lex.yy.c SymbolTable.cpp -ll -Ly
+g++ y.tab.c lex.yy.c ./SymbolTable/SymbolTable.cpp -ll -Ly -o run
+rm lex.yy.c y.tab.c y.tab.h
 echo
-./a.out < ./sample_programs/$1
+./run < ./sample_programs/$1
+rm run
 python3 icg_cleaner.py
+echo
+gedit ./ICG/ICG.txt ./sample_programs/$1 &
