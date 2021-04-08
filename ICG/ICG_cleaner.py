@@ -2,7 +2,7 @@
 	Removes extra new lines in ICG.txt
 '''
 
-f = open('./ICG/ICG.txt', 'r+')
+f = open('ICG.txt', 'r+')
 lines = f.readlines()
 cleaned_output = []
 for line in lines:

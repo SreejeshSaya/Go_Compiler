@@ -7,6 +7,8 @@ rm lex.yy.c y.tab.c y.tab.h
 echo
 ./run < ./sample_programs/$1
 rm run
-python3 icg_cleaner.py
+cd ./ICG
+python3 ICG_cleaner.py
+cd ../
 echo
 gedit ./ICG/ICG.txt ./sample_programs/$1 &
