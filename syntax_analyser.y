@@ -317,7 +317,7 @@ WHILE			: T_For '(' BOOL_EXPR ')' '{' { ++scope; } Stmts '}'
 						string start = newlabel();
 						$3.True = newlabel();
 						$3.False = newlabel();
-						$$.code = start + ": " + "\n" + $3.code + "if " + $3.addr + " goto " + $3.True + "\n" + "goto " + $3.False + "\n" + $3.True + ": " + $7.code + "\n" + "goto " + start + "\n" + $3.False + ": " + "\n"; 
+						$$.code = start + ": " + "\n" + $3.code + "if " + $3.addr + " goto " + $3.True + "\n" + "goto " + $3.False + "\n" + $3.True + ": " + "\n" + $7.code + "\n" + "goto " + start + "\n" + $3.False + ": " + "\n"; 
 				}
 				;
 
