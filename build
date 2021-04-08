@@ -7,8 +7,14 @@ rm lex.yy.c y.tab.c y.tab.h
 echo
 ./run < ./sample_programs/$1
 rm run
-cd ./ICG
-python3 ICG_cleaner.py
+
+cd ./ICG_QUAD
+python3 ICG_Cleaner.py
 cd ../
+
+cd ./ICG_QUAD
+python3 Quad_Gen.py
+cd ../
+
 echo
-gedit ./ICG/ICG.txt ./sample_programs/$1 &
+gedit ./ICG_QUAD/ICG.txt ./ICG_QUAD/QUAD.txt ./sample_programs/$1 &
