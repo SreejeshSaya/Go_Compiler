@@ -30,7 +30,7 @@ PROG   			: T_Package T_Main Stmts MAIN Stmts
 						cout << "\nValid Program\n\n";
 						$$.code = $3.code + "\n" + $4.code + "\n" + $5.code + "\n";
 						// cout << "Code:" << $$.code << "\n\n";
-						ofstream ICG("./ICG/ICG.txt");
+						ofstream ICG("./ICG_QUAD/ICG.txt");
 						ICG << $$.code;
 						ICG.close();
 				}
