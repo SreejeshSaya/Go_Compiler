@@ -66,6 +66,10 @@ for i in list_of_lines:
 				print("=",arg1,"NULL",res)
 				constantFoldedList.append(["=",arg1,"NULL",res])
 	
+	elif(op == "Label"):
+		print(op, "NULL", "NULL", res)
+		constantFoldedList.append(["label", "NULL", "NULL", res])
+
 	else:
 		print(op,arg1,arg2,res)
 		constantFoldedList.append([op,arg1,arg2,res])
@@ -88,20 +92,71 @@ for i in constantFoldedList:
 		if(i[0]=="not"):
 			print(i[3],"=",i[0],i[1])
 
-print("\n")
-print("After dead code elimination - ")
-print("------------------------------")
-for i in constantFoldedList:
-	if(i[0]=="="):
-		pass
-	elif(i[0] in ["+","-","*","/","==","<=","<",">",">="]):
-		print(i[3],"=",i[1],i[0],i[2])
-	elif(i[0] in ["if","goto","label","not"]):
-		if(i[0]=="if"):
-			print(i[0],i[1],"goto",i[3])
-		if(i[0]=="goto"):
-			print(i[0],i[3])
-		if(i[0]=="label"):
-			print(i[3],":")
-		if(i[0]=="not"):
-			print(i[3],"=",i[0],i[1])
+
+# print("\n")
+# print("After dead code elimination - ")
+# print("------------------------------")
+# for i in constantFoldedList:
+# 	if(i[0]=="="):
+# 		pass
+# 	elif(i[0] in ["+","-","*","/","==","<=","<",">",">="]):
+# 		print(i[3],"=",i[1],i[0],i[2])
+# 	elif(i[0] in ["if","goto","label","not"]):
+# 		if(i[0]=="if"):
+# 			print(i[0],i[1],"goto",i[3])
+# 		if(i[0]=="goto"):
+# 			print(i[0],i[3])
+# 		if(i[0]=="label"):
+# 			print(i[3],":")
+# 		if(i[0]=="not"):
+# 			print(i[3],"=",i[0],i[1])
+
+# dead code elimination
+quad_list = constantFoldedList[:]
+res = 0
+while(res == 0):
+    #print("1---------\n")
+    v = []
+    r = []
+    if quad_list[len(quad_list)-1][0] != 'var' and quad_list[len(quad_list)-1][0] != 'let' and quad_list[len(quad_list)-1][0] != 'const':
+        #print("say heloooo")
+        if quad_list[len(quad_list)-1][1] != "NULL":
+            v.append(quad_list[len(quad_list)-1][1])
+        if quad_list[len(quad_list)-1][2] != "NULL":
+            v.append(quad_list[len(quad_list)-1][2])
+        if quad_list[len(quad_list)-1][3] != "NULL":
+            r.append(quad_list[len(quad_list)-1][3])
+    else:
+        quad_list.remove(quad_list[len(quad_list)-1])
+    init = len(quad_list)
+    i = len(quad_list)-2
+    #print(i)
+    while i >=0:
+        #print("h--------------",quad_list[i][1],"\t",i,"\n")
+        
+        if quad_list[i][0] == 'var' or quad_list[i][0] == 'let' or quad_list[i][0] == 'const':
+             #print("1 -- hello")
+             if quad_list[i][1] not in r:
+                quad_list.remove(quad_list[i])
+        elif quad_list[i][0] != "Label" and quad_list[i][0] != "if" and quad_list[i][0] != "goto" and quad_list[i][0] != "iffalse" and quad_list[i][3] not in v:
+            quad_list.remove(quad_list[i])
+        else:
+            if quad_list[i][1] != "NULL" and quad_list[i][1] not in v:
+                v.append(quad_list[i][1])
+                
+            if quad_list[i][2] != "NULL" and quad_list[i][2] not in v:
+                v.append(quad_list[i][2])
+            if quad_list[i][3] != "NULL" and quad_list[i][3] not in r:
+                r.append(quad_list[i][3])  
+        
+            #print("hi")
+            #print(i,len(quad_list))
+        i-=1
+        #print(i)
+    if len(quad_list) == init:
+        res = 1
+
+print("\n\n----------------------------------------\nDead Code Elimination\n")      
+print('----------------------------------------')
+for i in quad_list:
+    print(i[0],i[1],i[2],i[3],sep = "\t")

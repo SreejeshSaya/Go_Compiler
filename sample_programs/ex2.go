@@ -7,7 +7,7 @@ func main() {
 	for (a < 4) {
 		a = a + 1;
 	}
-	
+	a = a + 2;
 	/*
 	// for loop
 	var a int = 1;

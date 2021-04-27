@@ -13,3 +13,7 @@ Label NULL NULL L2
 = t7 NULL a
 goto NULL NULL L1
 Label NULL NULL L3
+= a NULL t8
+= 2 NULL t9
++ t8 t9 t10
+= t10 NULL a

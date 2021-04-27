@@ -1,7 +1,7 @@
 import sys
 fin = open("ICG.txt")
 fout = open("QUAD.txt", 'w')
-
+quad_list = []
 for icg in fin.readlines():
 	icg = icg[:-1]
 	operands = icg.split()
@@ -60,6 +60,7 @@ for icg in fin.readlines():
 
 	sys.stdout = fout
 	print(op, a1, a2, res)
+	quad_list.append((op, a1, a2, res))
 
 fin.close()
 fout.close()
