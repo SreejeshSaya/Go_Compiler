@@ -21,4 +21,3 @@ python3 Code_Opt.py > OPT.txt
 cd ../
 
 echo
-gedit ./ICG_QUAD/ICG.txt ./ICG_QUAD/QUAD.txt ./CODE_OPT/OPT.txt ./sample_programs/$1 &
