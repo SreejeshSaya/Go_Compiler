@@ -8,11 +8,4 @@ func main() {
 		a = a + 1;
 	}
 	a = a + 2;
-	/*
-	// for loop
-	var a int = 1;
-	for i := 0; i < 4; i++ {
-		a = i;
-	}
-	*/
 }
