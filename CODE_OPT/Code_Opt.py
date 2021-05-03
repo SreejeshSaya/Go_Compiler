@@ -81,8 +81,8 @@ quad_list = CFList[:]
 res = 0
 while(res == 0):
     #print("1---------\n")
-    v = []
-    r = []
+    v = [] # Source operands
+    r = [] # Destn operands
     if quad_list[len(quad_list)-1][0] != 'int':
         #print("say heloooo")
         if quad_list[len(quad_list)-1][1] != "NULL":
