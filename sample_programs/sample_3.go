@@ -1,8 +1,7 @@
 package main
 
 func main() {
-
-	// semantic error - variable undeclared
-	var a int = 1;
-	b = 10;
+	
+	var a int = 2;
+	var b int = a * 3;
 }

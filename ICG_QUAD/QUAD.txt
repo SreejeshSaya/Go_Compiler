@@ -1,4 +1,5 @@
 = 3 NULL t1
+int a NULL NULL
 = t1 NULL a
 Label NULL NULL L1
 = a NULL t2

@@ -1,7 +1,8 @@
 package main
 
 func main() {
-	
-	// lexical error
-	var z string = "hey;
+
+	// semantic error - variable undeclared
+	var a int = 1;
+	b = 10;
 }

@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	
-	var a int = 2;
-	var b int = a * 3;
+
+	// variable-value mismatch in declaration
+	var a, b int = 1;
 }

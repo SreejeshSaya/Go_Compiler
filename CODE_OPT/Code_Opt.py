@@ -1,126 +1,89 @@
 f = open("../ICG_QUAD/QUAD.txt","r")
 
-list_of_lines = f.readlines()
+lines = f.readlines()
 f.close()
-dictValues = dict()
-constantFoldedList = []
-print("Quadruple form after Constant Folding")
-print("-------------------------------------")
-for i in list_of_lines:
-	i = i.strip("\n")
-	op,arg1,arg2,res = i.split()
+
+# Constant Folding and Propagation
+var_values = dict()
+CFList = []
+print("---------------------------Quadruple form after Constant Folding and Propagation---------------------------")
+for line in lines:
+	line = line.strip("\n")
+	op,a1,a2,res_var = line.split()
 	if(op in ["+","-","*","/"]):
-		if(arg1.isdigit() and arg2.isdigit()):
-			result = eval(arg1+op+arg2)
-			dictValues[res] = result
-			print("=",result,"NULL",res)
-			constantFoldedList.append(["=",result,"NULL",res])
-		elif(arg1.isdigit()):
-			if(arg2 in dictValues):
-				result = eval(arg1+op+dictValues[arg2])
-				dictValues[res] = result
-				print("=",result,"NULL",res)
-				constantFoldedList.append(["=",result,"NULL",res])
+		if(a1.isdigit() and a2.isdigit()):
+			res_varult = eval(a1+op+a2)
+			var_values[res_var] = res_varult
+			print("=",res_varult,"NULL",res_var)
+			CFList.append(["=",res_varult,"NULL",res_var])
+		elif(a1.isdigit()):
+			if(a2 in var_values):
+				res_varult = eval(a1+op+var_values[a2])
+				var_values[res_var] = res_varult
+				print("=",res_varult,"NULL",res_var)
+				CFList.append(["=",res_varult,"NULL",res_var])
 			else:
-				print(op,arg1,arg2,res)
-				constantFoldedList.append([op,arg1,arg2,res])
-		elif(arg2.isdigit()):
-			if(arg1 in dictValues):
-				result = eval(dictValues[arg1]+op+arg2)
-				dictValues[res] = result
-				print("=",result,"NULL",res)
-				constantFoldedList.append(["=",result,"NULL",res])
+				print(op,a1,a2,res_var)
+				CFList.append([op,a1,a2,res_var])
+		elif(a2.isdigit()):
+			if(a1 in var_values):
+				res_varult = eval(var_values[a1]+op+a2)
+				var_values[res_var] = res_varult
+				print("=",res_varult,"NULL",res_var)
+				CFList.append(["=",res_varult,"NULL",res_var])
 			else:
-				print(op,arg1,arg2,res)
-				constantFoldedList.append([op,arg1,arg2,res])
+				print(op,a1,a2,res_var)
+				CFList.append([op,a1,a2,res_var])
 		else:
 			flag1=0
 			flag2=0
-			arg1Res = arg1
-			if(arg1 in dictValues):
-				arg1Res = str(dictValues[arg1])
+			a1res_var = a1
+			if(a1 in var_values):
+				a1res_var = str(var_values[a1])
 				flag1 = 1
-			arg2Res = arg2
-			if(arg2 in dictValues):
-				arg2Res = str(dictValues[arg2])
+			a2res_var = a2
+			if(a2 in var_values):
+				a2res_var = str(var_values[a2])
 				flag2 = 1
 			if(flag1==1 and flag2==1):
-				result = eval(arg1Res+op+arg2Res)
-				dictValues[res] = result
-				print("=",result,"NULL",res) 
-				constantFoldedList.append(["=",result,"NULL",res])
+				res_varult = eval(a1res_var+op+a2res_var)
+				var_values[res_var] = res_varult
+				print("=",res_varult,"NULL",res_var) 
+				CFList.append(["=",res_varult,"NULL",res_var])
 			else:
-				print(op,arg1Res,arg2Res,res)
-				constantFoldedList.append([op,arg1Res,arg2Res,res])
+				print(op,a1res_var,a2res_var,res_var)
+				CFList.append([op,a1res_var,a2res_var,res_var])
 			
 	elif(op=="="):
-		if(arg1.isdigit()):
-			dictValues[res]=arg1
-			print("=",arg1,"NULL",res)
-			constantFoldedList.append(["=",arg1,"NULL",res])
+		if(a1.isdigit()):
+			var_values[res_var]=a1
+			print("=",a1,"NULL",res_var)
+			CFList.append(["=",a1,"NULL",res_var])
 		else:
-			if(arg1 in dictValues):
-				print("=",dictValues[arg1],"NULL",res)
-				dictValues[res] = dictValues[arg1]
-				constantFoldedList.append(["=",dictValues[arg1],"NULL",res])
+			if(a1 in var_values):
+				print("=",var_values[a1],"NULL",res_var)
+				var_values[res_var] = var_values[a1]
+				CFList.append(["=",var_values[a1],"NULL",res_var])
 			else:
-				print("=",arg1,"NULL",res)
-				constantFoldedList.append(["=",arg1,"NULL",res])
+				print("=",a1,"NULL",res_var)
+				CFList.append(["=",a1,"NULL",res_var])
 	
 	elif(op == "Label"):
-		print(op, "NULL", "NULL", res)
-		constantFoldedList.append(["label", "NULL", "NULL", res])
+		print(op, "NULL", "NULL", res_var)
+		CFList.append(["label", "NULL", "NULL", res_var])
 
 	else:
-		print(op,arg1,arg2,res)
-		constantFoldedList.append([op,arg1,arg2,res])
-
-# Convert above quadruple to 3-address code
-print("\n")
-print("Constant folded expression - ")
-print("--------------------")
-for i in constantFoldedList:
-	if(i[0]=="="):
-		print(i[3],i[0],i[1])
-	elif(i[0] in ["+","-","*","/","==","<=","<",">",">="]):
-		print(i[3],"=",i[1],i[0],i[2])
-	elif(i[0] in ["if","goto","label","not"]):
-		if(i[0]=="if"):
-			print(i[0],i[1],"goto",i[3])
-		if(i[0]=="goto"):
-			print(i[0],i[3])
-		if(i[0]=="label"):
-			print(i[3],":")
-		if(i[0]=="not"):
-			print(i[3],"=",i[0],i[1])
-
-
-# print("\n")
-# print("After dead code elimination - ")
-# print("------------------------------")
-# for i in constantFoldedList:
-# 	if(i[0]=="="):
-# 		pass
-# 	elif(i[0] in ["+","-","*","/","==","<=","<",">",">="]):
-# 		print(i[3],"=",i[1],i[0],i[2])
-# 	elif(i[0] in ["if","goto","label","not"]):
-# 		if(i[0]=="if"):
-# 			print(i[0],i[1],"goto",i[3])
-# 		if(i[0]=="goto"):
-# 			print(i[0],i[3])
-# 		if(i[0]=="label"):
-# 			print(i[3],":")
-# 		if(i[0]=="not"):
-# 			print(i[3],"=",i[0],i[1])
+		print(op,a1,a2,res_var)
+		CFList.append([op,a1,a2,res_var])
 
 # dead code elimination
-quad_list = constantFoldedList[:]
+quad_list = CFList[:]
 res = 0
 while(res == 0):
     #print("1---------\n")
     v = []
     r = []
-    if quad_list[len(quad_list)-1][0] != 'var' and quad_list[len(quad_list)-1][0] != 'let' and quad_list[len(quad_list)-1][0] != 'const':
+    if quad_list[len(quad_list)-1][0] != 'int':
         #print("say heloooo")
         if quad_list[len(quad_list)-1][1] != "NULL":
             v.append(quad_list[len(quad_list)-1][1])
@@ -136,7 +99,7 @@ while(res == 0):
     while i >=0:
         #print("h--------------",quad_list[i][1],"\t",i,"\n")
         
-        if quad_list[i][0] == 'var' or quad_list[i][0] == 'let' or quad_list[i][0] == 'const':
+        if quad_list[i][0] == 'int':
              #print("1 -- hello")
              if quad_list[i][1] not in r:
                 quad_list.remove(quad_list[i])
@@ -158,7 +121,8 @@ while(res == 0):
     if len(quad_list) == init:
         res = 1
 
-print("\n\n----------------------------------------\nDead Code Elimination\n")      
-print('----------------------------------------')
+print()
+print()
+print("----------------------------------------Dead Code Elimination----------------------------------------")
 for i in quad_list:
     print(i[0],i[1],i[2],i[3],sep = "\t")
