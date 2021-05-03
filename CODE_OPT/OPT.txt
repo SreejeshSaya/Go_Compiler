@@ -3,22 +3,22 @@ Quadruple form after Constant Folding
 = 3 NULL t1
 = 3 NULL a
 Label NULL NULL L1
-= a NULL t2
+= 3 NULL t2
 = 4 NULL t3
 < t2 t3 t4
 if t4 NULL L2
 goto NULL NULL L3
 Label NULL NULL L2
-= a NULL t5
+= 3 NULL t5
 = 1 NULL t6
-+ t5 1 t7
-= t7 NULL a
+= 4 NULL t7
+= 4 NULL a
 goto NULL NULL L1
 Label NULL NULL L3
-= a NULL t8
+= 4 NULL t8
 = 2 NULL t9
-+ t8 2 t10
-= t10 NULL a
+= 6 NULL t10
+= 6 NULL a
 
 
 Constant folded expression - 
@@ -26,38 +26,32 @@ Constant folded expression -
 t1 = 3
 a = 3
 L1 :
-t2 = a
+t2 = 3
 t3 = 4
 t4 = t2 < t3
 if t4 goto L2
 goto L3
 L2 :
-t5 = a
+t5 = 3
 t6 = 1
-t7 = t5 + 1
-a = t7
+t7 = 4
+a = 4
 goto L1
 L3 :
-t8 = a
+t8 = 4
 t9 = 2
-t10 = t8 + 2
-a = t10
+t10 = 6
+a = 6
 
 
 ----------------------------------------
 Dead Code Elimination
 
 ----------------------------------------
-=	3	NULL	a
-=	a	NULL	t2
+=	3	NULL	t2
 =	4	NULL	t3
 <	t2	t3	t4
 if	t4	NULL	L2
 goto	NULL	NULL	L3
-=	a	NULL	t5
-+	t5	1	t7
-=	t7	NULL	a
 goto	NULL	NULL	L1
-=	a	NULL	t8
-+	t8	2	t10
-=	t10	NULL	a
+=	6	NULL	a

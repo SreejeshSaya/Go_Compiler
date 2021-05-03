@@ -61,6 +61,7 @@ for i in list_of_lines:
 		else:
 			if(arg1 in dictValues):
 				print("=",dictValues[arg1],"NULL",res)
+				dictValues[res] = dictValues[arg1]
 				constantFoldedList.append(["=",dictValues[arg1],"NULL",res])
 			else:
 				print("=",arg1,"NULL",res)
@@ -74,6 +75,7 @@ for i in list_of_lines:
 		print(op,arg1,arg2,res)
 		constantFoldedList.append([op,arg1,arg2,res])
 
+# Convert above quadruple to 3-address code
 print("\n")
 print("Constant folded expression - ")
 print("--------------------")
