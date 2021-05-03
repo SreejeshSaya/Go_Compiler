@@ -6,55 +6,11 @@ f.close()
 # Constant Folding and Propagation
 var_values = dict()
 CFList = []
-print("---------------------------Quadruple form after Constant Folding and Propagation---------------------------")
+print("---------------------------POST Constant Folding and Propagation---------------------------")
 for line in lines:
 	line = line.strip("\n")
 	op,a1,a2,res_var = line.split()
-	if(op in ["+","-","*","/"]):
-		if(a1.isdigit() and a2.isdigit()):
-			res_varult = eval(a1+op+a2)
-			var_values[res_var] = res_varult
-			print("=",res_varult,"NULL",res_var)
-			CFList.append(["=",res_varult,"NULL",res_var])
-		elif(a1.isdigit()):
-			if(a2 in var_values):
-				res_varult = eval(a1+op+var_values[a2])
-				var_values[res_var] = res_varult
-				print("=",res_varult,"NULL",res_var)
-				CFList.append(["=",res_varult,"NULL",res_var])
-			else:
-				print(op,a1,a2,res_var)
-				CFList.append([op,a1,a2,res_var])
-		elif(a2.isdigit()):
-			if(a1 in var_values):
-				res_varult = eval(var_values[a1]+op+a2)
-				var_values[res_var] = res_varult
-				print("=",res_varult,"NULL",res_var)
-				CFList.append(["=",res_varult,"NULL",res_var])
-			else:
-				print(op,a1,a2,res_var)
-				CFList.append([op,a1,a2,res_var])
-		else:
-			flag1=0
-			flag2=0
-			a1res_var = a1
-			if(a1 in var_values):
-				a1res_var = str(var_values[a1])
-				flag1 = 1
-			a2res_var = a2
-			if(a2 in var_values):
-				a2res_var = str(var_values[a2])
-				flag2 = 1
-			if(flag1==1 and flag2==1):
-				res_varult = eval(a1res_var+op+a2res_var)
-				var_values[res_var] = res_varult
-				print("=",res_varult,"NULL",res_var) 
-				CFList.append(["=",res_varult,"NULL",res_var])
-			else:
-				print(op,a1res_var,a2res_var,res_var)
-				CFList.append([op,a1res_var,a2res_var,res_var])
-			
-	elif(op=="="):
+	if(op == "="):
 		if(a1.isdigit()):
 			var_values[res_var]=a1
 			print("=",a1,"NULL",res_var)
@@ -67,6 +23,49 @@ for line in lines:
 			else:
 				print("=",a1,"NULL",res_var)
 				CFList.append(["=",a1,"NULL",res_var])
+	elif(op in ["+","-","*","/"]):
+		if(a1.isdigit() and a2.isdigit()):
+			var_res = eval(a1+op+a2)
+			var_values[res_var] =  var_res
+			print("=", var_res,"NULL",res_var)
+			CFList.append(["=", var_res,"NULL",res_var])
+		elif(a1.isdigit()):
+			if(a2 in var_values):
+				var_res = eval(a1+op+var_values[a2])
+				var_values[res_var] =  var_res
+				print("=", var_res,"NULL",res_var)
+				CFList.append(["=", var_res,"NULL",res_var])
+			else:
+				print(op,a1,a2,res_var)
+				CFList.append([op,a1,a2,res_var])
+		elif(a2.isdigit()):
+			if(a1 in var_values):
+				var_res = eval(var_values[a1]+op+a2)
+				var_values[res_var] =  var_res
+				print("=", var_res,"NULL",res_var)
+				CFList.append(["=", var_res,"NULL",res_var])
+			else:
+				print(op,a1,a2,res_var)
+				CFList.append([op,a1,a2,res_var])
+		else:
+			af1=0
+			af2=0
+			a1res = a1
+			if(a1 in var_values):
+				a1res = str(var_values[a1])
+				af1 = 1
+			a2res = a2
+			if(a2 in var_values):
+				a2res = str(var_values[a2])
+				af2 = 1
+			if(af1==1 and af2==1):
+				var_res = eval(a1res+op+a2res)
+				var_values[res_var] = var_res
+				print("=", var_res,"NULL",res_var) 
+				CFList.append(["=", var_res,"NULL",res_var])
+			else:
+				print(op,a1res,a2res,res_var)
+				CFList.append([op,a1res,a2res,res_var])
 	
 	elif(op == "Label"):
 		print(op, "NULL", "NULL", res_var)
@@ -76,7 +75,10 @@ for line in lines:
 		print(op,a1,a2,res_var)
 		CFList.append([op,a1,a2,res_var])
 
-# dead code elimination
+# -----------------------
+# Dead code elimination
+# -----------------------
+
 quad_list = CFList[:]
 res = 0
 while(res == 0):
@@ -123,6 +125,6 @@ while(res == 0):
 
 print()
 print()
-print("----------------------------------------Dead Code Elimination----------------------------------------")
+print("---------------------------------------- POST Dead Code Elimination----------------------------------------")
 for i in quad_list:
     print(i[0],i[1],i[2],i[3],sep = "\t")
