@@ -15,9 +15,14 @@ A compiler built for the Go Language using lex and yacc files.
 - include - contains attributes.h header which defines the attributes for the grammar variables
 - SymbolTable - contains an implementation of the symbol table which keeps track of the declared variables
 - ICG_QUAD
-	- contains the output ICG and Quadruple text files.
 	- The Quad_Gen.py is responsible for converting 3-address code to quadruple format
 - CODE_OPT - contains Code_Opt.py which does the code optimisation
+# Output Files
+- ICG_QUAD
+	- ICG.txt - text file containing the 3-address intermediate code
+	- QUAD.txt - text file containing the ICG in quadruple format
+- CODE_OPT
+	- OPT.txt - text file containing the optimised code in quadruple format
 # Features
 The design implementation supports
 1. Variable declarations and initializations
